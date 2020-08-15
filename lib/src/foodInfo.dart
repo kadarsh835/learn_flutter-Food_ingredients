@@ -14,7 +14,10 @@ class FoodInfo extends StatelessWidget {
           ),
 					backgroundColor: Colors.black,
         ),
-        body: nutritionalInfoWidget(jsonFoodDetail),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: nutritionalInfoWidget(jsonFoodDetail),
+        )
       ),
     );
   }
