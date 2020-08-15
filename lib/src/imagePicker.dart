@@ -58,11 +58,11 @@ class MyImagePickerState extends State<MyImagePicker> {
         child: RaisedButton(
           onPressed: () async {
             print('Requested to fetch the Food Item Detected');
-            // String result = await sendImage(imageURI);
+            var result = await sendImage(imageURI);
             // print('Food Item Predicted: $result');
 
             // var result = List<String>.generate(100, (index) => "Item $index");
-            var result = testJSON();
+            // var result = testJSON();
 
             Navigator.push(
               context,
@@ -83,19 +83,19 @@ class MyImagePickerState extends State<MyImagePicker> {
   }
   // Future<http.Response> sendImage(File imageURI) async{
 
-  Future<String> sendImage(File imageURI) async {
+  Future<List<dynamic>> sendImage(File imageURI) async {
     String imgBase64 = convertImgToBase64(imageURI);
     Map foodItem = {'food_image': imgBase64};
     var body = json.encode(foodItem);
     http.Response response = await http.post(
-        'http://f51f949b.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
+        'http://8e152340402b.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
         headers: {"Content-Type": "application/json"},
         body: body);
     print('Status Code: ${response.statusCode}');
-    if (response.statusCode == 202) {
+    if (response.statusCode == 200) {
       Map<String, dynamic> decodedJson = jsonDecode(response.body);
       print(decodedJson);
-      return decodedJson['food_item'];
+      return decodedJson['nutritional_info'];
     } else
       throw Exception('Failed');
   }
