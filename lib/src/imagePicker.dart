@@ -30,24 +30,30 @@ class MyImagePickerState extends State<MyImagePicker> {
   Container buttonContainerCamera() {
     return Container(
         margin: EdgeInsets.fromLTRB(0, 30, 0, 20),
-        child: RaisedButton(
+        child: RaisedButton.icon(
           onPressed: () => getImageFromCamera(),
-          child: Text('Click Here to Capture Image From Camera'),
+          icon: Icon(Icons.camera_alt),
+          label: Text('Camera '),
           textColor: Colors.white,
-          color: Colors.grey,
+          color: Colors.black,
           padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         ));
   }
 
   Container buttonContainerGallary() {
     return Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-        child: RaisedButton(
+        child: RaisedButton.icon(
           onPressed: () => getImageFromGallary(),
-          child: Text('Click Here to get Image From Gallary'),
+          icon: Icon(Icons.image),
+          label: Text('Gallary '),
           textColor: Colors.white,
-          color: Colors.grey,
+          color: Colors.black,
           padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         ));
   }
 
@@ -55,9 +61,8 @@ class MyImagePickerState extends State<MyImagePicker> {
     if (imageURI == null) return new Container();
     return Container(
         margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-        child: RaisedButton(
+        child: RaisedButton.icon(
           onPressed: () async {
-            print('Requested to fetch the Food Item Detected');
             // var result = await sendImage(imageURI);
             // print('Food Item Predicted: $result');
 
@@ -69,7 +74,8 @@ class MyImagePickerState extends State<MyImagePicker> {
               MaterialPageRoute(builder: (context) => ServingSize(result)),
             );
           },
-          child: Text('Get Details'),
+          icon: Icon(Icons.list),
+          label: Text('Get Details'),
           textColor: Colors.white,
           color: Colors.black,
           padding: EdgeInsets.fromLTRB(12, 12, 12, 12),
@@ -114,13 +120,28 @@ class MyImagePickerState extends State<MyImagePicker> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          imageURI == null
-              ? uploadImageMessage()
-              : Image.file(imageURI,
-                  width: 300, height: 200, fit: BoxFit.cover),
-          buttonGetFoodDetails(imageURI),
-          buttonContainerCamera(),
-          buttonContainerGallary(),
+          Container(
+            child: imageURI == null
+                ? uploadImageMessage()
+                : Image.file(imageURI,
+                    width: 300, height: 200, fit: BoxFit.cover),
+          ),
+          Container(
+            child: imageURI != null ? buttonGetFoodDetails(imageURI) : null,
+          ),
+          Row(
+            children: <Widget>[
+              Container(
+                child: buttonContainerCamera(),
+                alignment: Alignment.centerLeft,
+              ),
+              Container(
+                child: buttonContainerGallary(),
+                alignment: Alignment.centerRight,
+              ),
+            ],
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+          )
         ],
       ),
     ));

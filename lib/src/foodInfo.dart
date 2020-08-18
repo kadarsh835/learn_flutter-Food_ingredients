@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:food_ingredients/src/utils/textFormatter.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:food_ingredients/src/nutrientConsumption.dart';
 
 class FoodInfo extends StatelessWidget {
   final jsonFoodDetail;
+  SharedPreferences prefs;
   FoodInfo(this.jsonFoodDetail);
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,13 @@ class FoodInfo extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => {
-            storeToDisk(jsonFoodDetail),
+            storeToDisk(jsonFoodDetail).then((prefs) => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NutrientConsumption(prefs)),
+                  ),
+                })
           },
           tooltip: 'Add to today\'s diet',
           label: Text("Add to today\'s diet"),
@@ -67,7 +74,7 @@ List<DataRow> getParamValues(jsonFoodNutritionalInfo) {
   return dataRows;
 }
 
-Future<void> storeToDisk(foodJsonData) async {
+Future<SharedPreferences> storeToDisk(foodJsonData) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
 
   DateTime lastStoredDay;
@@ -104,4 +111,5 @@ Future<void> storeToDisk(foodJsonData) async {
       prefs.setString(key, value);
     }
   });
+  return prefs;
 }
