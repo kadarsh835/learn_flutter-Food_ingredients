@@ -58,11 +58,11 @@ class MyImagePickerState extends State<MyImagePicker> {
         child: RaisedButton(
           onPressed: () async {
             print('Requested to fetch the Food Item Detected');
-            var result = await sendImage(imageURI);
+            // var result = await sendImage(imageURI);
             // print('Food Item Predicted: $result');
 
             // var result = List<String>.generate(100, (index) => "Item $index");
-            // var result = testJSON();
+            var result = testJSON();
 
             Navigator.push(
               context,
