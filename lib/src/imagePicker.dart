@@ -5,6 +5,9 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:food_ingredients/src/nutrientConsumption.dart';
+
 class MyImagePicker extends StatefulWidget {
   @override
   MyImagePickerState createState() => MyImagePickerState();
@@ -20,7 +23,7 @@ class MyImagePickerState extends State<MyImagePicker> {
     });
   }
 
-  Future getImageFromGallary() async {
+  Future getImageFromGallery() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       imageURI = image;
@@ -42,13 +45,13 @@ class MyImagePickerState extends State<MyImagePicker> {
         ));
   }
 
-  Container buttonContainerGallary() {
+  Container buttonContainerGallery() {
     return Container(
         margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
         child: RaisedButton.icon(
-          onPressed: () => getImageFromGallary(),
+          onPressed: () => getImageFromGallery(),
           icon: Icon(Icons.image),
-          label: Text('Gallary '),
+          label: Text('Gallery '),
           textColor: Colors.white,
           color: Colors.black,
           padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
@@ -66,7 +69,6 @@ class MyImagePickerState extends State<MyImagePicker> {
             // var result = await sendImage(imageURI);
             // print('Food Item Predicted: $result');
 
-            // var result = List<String>.generate(100, (index) => "Item $index");
             var result = testJSON();
 
             Navigator.push(
@@ -94,7 +96,7 @@ class MyImagePickerState extends State<MyImagePicker> {
     Map foodItem = {'food_image': imgBase64};
     var body = json.encode(foodItem);
     http.Response response = await http.post(
-        'http://8e152340402b.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
+        'https://25659cc4270d.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
         headers: {"Content-Type": "application/json"},
         body: body);
     print('Status Code: ${response.statusCode}');
@@ -108,7 +110,7 @@ class MyImagePickerState extends State<MyImagePicker> {
 
   Text uploadImageMessage() {
     return Text(
-      'Capture Image/ Select from Gallary',
+      'Capture Image/ Select from Gallery',
       textAlign: TextAlign.center,
     );
   }
@@ -116,35 +118,51 @@ class MyImagePickerState extends State<MyImagePicker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            child: imageURI == null
-                ? uploadImageMessage()
-                : Image.file(imageURI,
-                    width: 300, height: 200, fit: BoxFit.cover),
-          ),
-          Container(
-            child: imageURI != null ? buttonGetFoodDetails(imageURI) : null,
-          ),
-          Row(
-            children: <Widget>[
-              Container(
-                child: buttonContainerCamera(),
-                alignment: Alignment.centerLeft,
-              ),
-              Container(
-                child: buttonContainerGallary(),
-                alignment: Alignment.centerRight,
-              ),
-            ],
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-          )
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              child: imageURI == null
+                  ? uploadImageMessage()
+                  : Image.file(imageURI,
+                      width: 300, height: 200, fit: BoxFit.cover),
+            ),
+            Container(
+              child: imageURI != null ? buttonGetFoodDetails(imageURI) : null,
+            ),
+            Row(
+              children: <Widget>[
+                Container(
+                  child: buttonContainerCamera(),
+                  alignment: Alignment.centerLeft,
+                ),
+                Container(
+                  child: buttonContainerGallery(),
+                  alignment: Alignment.centerRight,
+                ),
+              ],
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            )
+          ],
+        ),
       ),
-    ));
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () async => {
+          await SharedPreferences.getInstance().then((prefs) => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NutrientConsumption(prefs)),
+                ),
+              })
+        },
+        tooltip: 'Today\'s Nutritional Consumption',
+        label: Text("Today\'s Nutritional Consumption"),
+        icon: Icon(Icons.assessment),
+        backgroundColor: Colors.black,
+      ),
+    );
   }
 }
 

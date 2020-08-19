@@ -44,12 +44,14 @@ Widget nutritionalInfoWidget(prefs) {
 List<DataRow> getParamValues(prefs) {
   List<DataRow> dataRows = [];
   prefs.getKeys().forEach((key) {
-    dataRows.add(
-      DataRow(cells: <DataCell>[
-        DataCell(Text(textFormatter(key))),
-        DataCell(Text(textFormatter(prefs.get(key))))
-      ]),
-    );
+    if (key != 'last_day') {
+      dataRows.add(
+        DataRow(cells: <DataCell>[
+          DataCell(Text(textFormatter(key))),
+          DataCell(Text(textFormatter(prefs.get(key))))
+        ]),
+      );
+    }
   });
   return dataRows;
 }

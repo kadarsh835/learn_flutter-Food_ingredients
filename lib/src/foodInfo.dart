@@ -76,6 +76,8 @@ List<DataRow> getParamValues(jsonFoodNutritionalInfo) {
 
 Future<SharedPreferences> storeToDisk(foodJsonData) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  // await prefs.clear();
+  // return prefs;
 
   DateTime lastStoredDay;
   var value;
