@@ -16,17 +16,17 @@ Some of the features of this application are:
 
 
 #### **Prerequisites**
-- Flutter installed on your local device. Make sure you can run the `flutter` command from inside the terminal at the location when you clone these files. If you are not able to, please modify the environment variables
+- Flutter installed on your local device. Make sure you can run the `flutter` command from inside the terminal at the location when you clone these files. If you are not able to, please try installing flutter/modifying the environment variables
 
     A few resources to get you started if this is your first Flutter project:
     - [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
     - [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-    - For help getting started with Flutter, view our
-    [online documentation](https://flutter.dev/docs), which offers tutorials,
+    - For help getting started with Flutter, view the
+    [online documentation](https://flutter.dev/docs) of flutter, which offers tutorials,
     samples, guidance on mobile development, and a full API reference.
 
 - Android Studio installed on the device.
-#### *Install Procedure*
+#### **Install Procedure**
 - **Clone the repository**
     > ```git clone 'https://github.com/kadarsh835/learn_flutter-Food_ingredients'```
 - **Check flutter setup** on your device and get your device ready for installation of a flutter application. Run the following command
