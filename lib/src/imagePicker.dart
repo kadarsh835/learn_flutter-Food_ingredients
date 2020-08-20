@@ -66,10 +66,10 @@ class MyImagePickerState extends State<MyImagePicker> {
         margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
         child: RaisedButton.icon(
           onPressed: () async {
-            // var result = await sendImage(imageURI);
+            var result = await sendImage(imageURI);
             // print('Food Item Predicted: $result');
 
-            var result = testJSON();
+            // var result = testJSON();
 
             Navigator.push(
               context,
@@ -96,7 +96,7 @@ class MyImagePickerState extends State<MyImagePicker> {
     Map foodItem = {'food_image': imgBase64};
     var body = json.encode(foodItem);
     http.Response response = await http.post(
-        'https://25659cc4270d.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
+        'https://84b295c0deaa.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
         headers: {"Content-Type": "application/json"},
         body: body);
     print('Status Code: ${response.statusCode}');
@@ -166,6 +166,7 @@ class MyImagePickerState extends State<MyImagePicker> {
   }
 }
 
+// For debugging purpose only
 List<Map<String, dynamic>> testJSON() {
   return [
     {
