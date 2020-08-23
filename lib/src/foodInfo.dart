@@ -85,7 +85,6 @@ Future<SharedPreferences> storeToDisk(foodJsonData) async {
     lastStoredDay = DateTime(prefs.get('last_day'));
   } catch (e) {
     lastStoredDay = DateTime.now();
-    prefs.setString('last_day', lastStoredDay.toString());
   }
 
   // prefs.getKeys().forEach((key) {
@@ -94,8 +93,8 @@ Future<SharedPreferences> storeToDisk(foodJsonData) async {
   // });
 
   var now = new DateTime.now();
-  if (now.day - lastStoredDay.day != 0 ||
-      now.difference(lastStoredDay).inDays >= 1) await prefs.clear();
+  if (now.difference(lastStoredDay).inDays >= 1) await prefs.clear();
+  prefs.setString('last_day', now.toString());
 
   foodJsonData.keys.forEach((key) {
     value = prefs.get(key) ?? "%";

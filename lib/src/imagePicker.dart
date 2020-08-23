@@ -3,6 +3,7 @@ import 'package:food_ingredients/src/servingSizePage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:storage_path/storage_path.dart';
 import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,14 +18,20 @@ class MyImagePickerState extends State<MyImagePicker> {
   File imageURI;
 
   Future getImageFromCamera() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.camera);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.camera, maxHeight: 800, maxWidth: 800);
+    // final String path = await StoragePath.imagesPath;
+    // await image.copy(path);
     setState(() {
       imageURI = image;
     });
   }
 
   Future getImageFromGallery() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var image = await ImagePicker.pickImage(
+        source: ImageSource.gallery, maxHeight: 800, maxWidth: 800);
+    // final String path = await StoragePath.imagesPath;
+    // await image.copy(path);
     setState(() {
       imageURI = image;
     });
@@ -96,13 +103,11 @@ class MyImagePickerState extends State<MyImagePicker> {
     Map foodItem = {'food_image': imgBase64};
     var body = json.encode(foodItem);
     http.Response response = await http.post(
-        'https://84b295c0deaa.ngrok.io/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
+        'https://tranquil-bayou-67125.herokuapp.com/diet_suggestion_api/predict_food_item/', //Using Ngrok Temporarily.
         headers: {"Content-Type": "application/json"},
         body: body);
-    print('Status Code: ${response.statusCode}');
     if (response.statusCode == 200) {
       Map<String, dynamic> decodedJson = jsonDecode(response.body);
-      print(decodedJson);
       return decodedJson['nutritional_info'];
     } else
       throw Exception('Failed');
